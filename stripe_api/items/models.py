@@ -15,6 +15,11 @@ class Item(models.Model):
     price = models.IntegerField(
         verbose_name='Цена'
     )
+    currency = models.CharField(
+        max_length=5,
+        null=False,
+        verbose_name='Валюта'
+    )
 
     def __str__(self):
         return self.name
@@ -25,12 +30,27 @@ class Order(models.Model):
 
     item = models.ManyToManyField(
         Item,
-        through='OrderItem',
         verbose_name='Заказ'
     )
 
+    tax = models.ForeignKey(
+        'Tax',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='order'
+    )
+
+    discount = models.ForeignKey(
+        'Discount',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='order'
+    )
+
     def __str__(self):
-        pass
+        return '2'
+    # #     return ', '.join(str(item) for item in self.item.all())
+    #     return [str(item1) for item1 in self.item.all()]
 
 
 class Discount(models.Model):
@@ -40,8 +60,6 @@ class Discount(models.Model):
         verbose_name='Скидка'
     )
 
-    pass
-
 
 class Tax(models.Model):
     """Класс для налога"""
@@ -49,5 +67,3 @@ class Tax(models.Model):
     rate = models.IntegerField(
         verbose_name='Налог'
     )
-
-    pass
