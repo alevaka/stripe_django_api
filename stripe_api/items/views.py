@@ -1,13 +1,18 @@
+import os
+
 import stripe
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from .models import Item
 
-stripe_api_key = 'sk_test_51M6JL2DmksvhmrdClPVTd3k1HFt7IBGDwE9fMaYrfMzZzC50vO7AiysALPjaZ2Ad2NDtr9TDLi6xZwfHQ4G7hk7K00382JZNYF'
+stripe_api_key = os.getenv('STRIPE_API_PUBLIC_KEY')
 
 
-def buy_item(request, pk) -> JsonResponse:
+def buy_item(request: HttpRequest, pk: int) -> JsonResponse:
+    """Функция для покупки одного товара.
+    Создаёт Stripe Session и возвращает id сессии"""
+
     line_items = []
     item = get_object_or_404(Item, pk=pk)
     line_items.append(
@@ -25,9 +30,8 @@ def buy_item(request, pk) -> JsonResponse:
     session = stripe.checkout.Session.create(
           api_key=stripe_api_key,
           mode='payment',
-          # currency='USD',
           line_items=line_items,
-          success_url='http://localhost:8000/',
+          success_url=f'http://localhost:8000/item/{pk}/',
           cancel_url=f'http://localhost:8000/item/{pk}/'
       )
 
@@ -38,7 +42,9 @@ def buy_item(request, pk) -> JsonResponse:
     return JsonResponse(json_data)
 
 
-def show_item(request, pk):
+def show_item(request: HttpRequest, pk: int) -> HttpResponse:
+    """Функция для показа страницы товара."""
+
     template = 'items/item.html'
     item = get_object_or_404(Item, pk=pk)
     currency_symbols = {
