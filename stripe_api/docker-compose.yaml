@@ -9,6 +9,9 @@ services:
       - ./.env
   web:
     build: .
+    command: >
+        bash -c "python manage.py migrate &&
+                 gunicorn stripe_api.wsgi:application --bind 0:8000"
     restart: always
     ports:
      - "8000:8000"
