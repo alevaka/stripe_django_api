@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', default='kmbcl46y-8kiek*qk6@xs71&4pc')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG_STATUS')
+DEBUG = os.getenv('DJANGO_DEBUG_STATUS', default=False)
 
-ALLOWED_HOSTS = ['185.231.155.169', 'stripe.myvnc.com']
+ALLOWED_HOSTS = ['185.231.155.169', 'stripe.myvnc.com', 'localhost']
 
 
 # Application definition
@@ -77,12 +77,12 @@ WSGI_APPLICATION = 'stripe_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
+        'ENGINE': os.getenv('DB_ENGINE', default= 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', default= 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', default= 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default= 'postgres'),
+        'HOST': os.getenv('DB_HOST', default= 'db'),
+        'PORT': os.getenv('DB_PORT', default= '5432')
     }
 }
 
