@@ -47,11 +47,6 @@ class Order(models.Model):
         related_name='order'
     )
 
-    def __str__(self):
-        return '2'
-    # #     return ', '.join(str(item) for item in self.item.all())
-    #     return [str(item1) for item1 in self.item.all()]
-
 
 class Discount(models.Model):
     """Класс для скидки"""

@@ -4,7 +4,8 @@ import stripe
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models import Item
+
+from .models import Item, Order
 
 stripe_api_key = os.getenv('STRIPE_API_PUBLIC_KEY')
 
@@ -60,3 +61,8 @@ def show_item(request: HttpRequest, pk: int) -> HttpResponse:
     }
 
     return render(request, template, context)
+
+def create_order(request: HttpRequest) -> JsonResponse:
+    order = Order.objects.create()
+    meta_keys = request.META
+    return JsonResponse({'order_id': order.id, 'REMOTE_ADDR': meta_keys['REMOTE_ADDR']})
