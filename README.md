@@ -22,3 +22,16 @@ POSTGRES_PASSWORD=postgres
 DB_HOST=db
 DB_PORT=5432
 ```
+
+### Сервис
+* `admin/` - Admin панель
+* `buy/<id>/` - купить товар
+* `item/<id>/` - страница товара
+* `item/<id>/add_to_order/` - добавить товар в заказ (в теле запроса должен быть order_id)
+* `order/create/` - создать заказ
+* `order/<order_id>/` - показть список товаров в заказе (возвращает JSON)
+* `order/<order_id>/pay/` - оплатить заказ
+
+### Тестовый сервер
+`stripe.myvnc.com:8000/admin/`
+`admin/admin`
